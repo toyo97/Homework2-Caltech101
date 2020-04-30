@@ -46,8 +46,10 @@ class Caltech(VisionDataset):
         self.imgs = []
         self.labels = []
 
+        split_path = os.path.join(''.join(root.split('/')[:-1]), split + '.txt')
+        print(split_path)
         class_counter = 0
-        for line in open(os.path.join(os.path.join(root, os.pardir), split + '.txt'), 'r'):
+        for line in open(split_path, 'r'):
             if line.find('BACKGROUND') == -1:
                 img = pil_loader(os.path.join(root, line.strip()))
                 self.imgs.append(img)
@@ -109,7 +111,7 @@ class Caltech(VisionDataset):
 # Testing the methods
 if __name__ == '__main__':
 
-    data_dir = '101_ObjectCategories'
+    data_dir = 'Homework2-Caltech101/101_ObjectCategories'
     cal = Caltech(data_dir, split='test')
     image, label = cal[0]
     image.show()

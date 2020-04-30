@@ -91,6 +91,20 @@ class Caltech(VisionDataset):
         length = len(self.imgs)  # Provide a way to get the length (number of elements) of the dataset
         return length
 
+    def split_len(self, val_ratio):
+        """
+        Helper function to be used with torch.utils.data.dataset.random_split
+        Compute the lengths of the two splits starting from a fraction
+
+        :param val_ratio: float, proportion of validation subset size
+        :return: list of two ints, the two lengths which sum up to the total length of the dataset
+        """
+
+        val_len = int(len(self.imgs) * val_ratio)
+        train_len = len(self.imgs) - val_len
+
+        return [train_len, val_len]
+
 
 # Testing the methods
 if __name__ == '__main__':

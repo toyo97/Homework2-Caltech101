@@ -46,7 +46,7 @@ class Caltech(VisionDataset):
         self.imgs = []
         self.labels = []
 
-        split_path = 'Caltech101'+split+'.txt'
+        split_path = 'Caltech101/'+split+'.txt'
         class_counter = 0
         for line in open(split_path, 'r'):
             if line.find('BACKGROUND') == -1:

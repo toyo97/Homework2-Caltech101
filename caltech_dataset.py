@@ -47,9 +47,9 @@ class Caltech(VisionDataset):
         self.labels = []
 
         class_counter = 0
-        for line in open(split + '.txt', 'r'):
+        for line in open(os.path.join(os.path.join(root, os.pardir), split + '.txt'), 'r'):
             if line.find('BACKGROUND') == -1:
-                img = pil_loader(os.path.join(data_dir, line.strip()))
+                img = pil_loader(os.path.join(root, line.strip()))
                 self.imgs.append(img)
 
                 # Extract label name and, if not already seen, associate an incremental id

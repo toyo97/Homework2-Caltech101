@@ -5,7 +5,8 @@ from PIL import Image
 import os
 import os.path
 import sys
-
+from sklearn.model_selection import train_test_split
+import numpy as np
 
 def pil_loader(path):
     # open path as file to avoid ResourceWarning (https://github.com/python-pillow/Pillow/issues/835)
@@ -62,6 +63,7 @@ class Caltech(VisionDataset):
 
                 self.labels.append(self.label_names[label_name])
 
+        self.length = len(self.labels)
         assert class_counter == 101
 
     def __getitem__(self, index) -> (Image, int):
@@ -89,10 +91,9 @@ class Caltech(VisionDataset):
 
         :return: int
         """
-        length = len(self.imgs)  # Provide a way to get the length (number of elements) of the dataset
-        return length
+        return self.length
 
-    def split_len(self, val_ratio):
+    def split_len(self, test_ratio):
         """
         Helper function to be used with torch.utils.data.dataset.random_split
         Compute the lengths of the two splits starting from a fraction
@@ -101,10 +102,25 @@ class Caltech(VisionDataset):
         :return: list of two ints, the two lengths which sum up to the total length of the dataset
         """
 
-        val_len = int(len(self.imgs) * val_ratio)
+        val_len = int(len(self.imgs) * test_ratio)
         train_len = len(self.imgs) - val_len
 
         return [train_len, val_len]
+
+    def split_idx(self, test_size):
+        """
+        Split the dataset in a stratified fashion.
+
+        :param test_size: float, ratio of the test (or validation) split
+        :return: tuple of arrays, (train_idx, valid_idx)
+        """
+        train_idx, valid_idx = train_test_split(
+            np.arange(len(self.labels)),
+            test_size=test_size,
+            shuffle=True,
+            stratify=self.labels)
+
+        return train_idx, valid_idx
 
 
 # Testing the methods

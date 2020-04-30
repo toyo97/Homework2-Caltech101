@@ -17,8 +17,8 @@ def pil_loader(path):
 class Caltech(VisionDataset):
     def __init__(self, root, split='train', transform=None, target_transform=None):
         """
-        Contains the images defined in the split file along with their class label. To match the class index
-        to the actual label name, find the index in the label_names attribute of the object.
+        Load in the main memory all the images defined in the split file along with their class label.
+        To match the class index to the actual label name, find the index in the label_names attribute of the object.
 
         :param root: path to root directory
         :param split: name of the txt file containing all the relative paths of the images in the split
